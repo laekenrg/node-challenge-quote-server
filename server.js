@@ -1,11 +1,13 @@
 const { response } = require("express");
-const lodash = require('lodash');
+const lodash = require("lodash");
+const cors = require("cors");
 // server.js
 // This is where your node app starts
 
 //load the 'express' module which makes writing webservers easy
 const express = require("express");
 const app = express();
+app.use(cors());
 
 //load the quotes JSON
 const quotes = require("./quotes.json");
@@ -15,7 +17,9 @@ const quotes = require("./quotes.json");
 //   /quotes            - Should return all quotes (json)
 //   /quotes/random     - Should return ONE quote (json)
 app.get("/", function (request, response) {
-  response.send("Laeken's Quote Server!  Ask me for /quotes/random, or /quotes");
+  response.send(
+    "Laeken's Quote Server!  Ask me for /quotes/random, or /quotes"
+  );
 });
 
 //START OF YOUR CODE...
@@ -35,16 +39,15 @@ app.get("/quotes/random", function (req, res) {
 app.get("/quotes/search", function (req, res) {
   const searchTerm = req.query.term.toLowerCase();
   const searchQuotes = quotes.filter((quoteObj) => {
-    
     // --Encontrar Quotes que contengan Xs palabra
     const quoteByWordToLowerCase = quoteObj.quote.toLowerCase();
     const findQuotebyWord = quoteByWordToLowerCase.includes(searchTerm);
-    
+
     // --Encontrar Quotes con el mismo Author
     const quoteByAuthorToLowerCase = quoteObj.author.toLowerCase();
     const findQuotebyAuthor = quoteByAuthorToLowerCase.includes(searchTerm);
 
-    return findQuotebyWord || findQuotebyAuthor ;
+    return findQuotebyWord || findQuotebyAuthor;
   });
 
   res.send(searchQuotes);
@@ -54,7 +57,6 @@ app.get("/quotes/search", function (req, res) {
 app.get("/lodash", function (request, response) {
   response.send(lodash.sample(quotes));
 });
-
 
 //...END OF YOUR CODE
 
